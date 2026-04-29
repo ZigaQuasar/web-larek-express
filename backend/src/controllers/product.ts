@@ -21,10 +21,7 @@ export const createProduct = async (
   next: NextFunction,
 ) => Product.create(req.body)
   .then((product) => {
-    res.status(201).json({
-      items: [product],
-      total: 1,
-    });
+    res.status(201).json(product);
   })
   .catch((err) => {
     if (err instanceof Error && err.message.includes('E11000')) {
