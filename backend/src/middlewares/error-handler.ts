@@ -21,8 +21,9 @@ export const errorHandler = (
   }
 
   if (err instanceof Error && err.message.includes('E11000')) {
-    const field = Object.keys((err as any).keyPattern)?.[0] || 'title';
-    message = `Поле "${field}" уже существует`;
+    const [field] = Object.keys((err as any).keyPattern || {}) as [string?];
+    const fieldName = field || 'title';
+    message = `Поле "${fieldName}" уже существует`;
     return res.status(409).json({ message });
   }
 
@@ -31,18 +32,17 @@ export const errorHandler = (
   if (err instanceof NotFoundError) return res.status(404).json({ message });
 
   if (err.details && typeof err.details === 'object') {
-    const details = err.details;
+    const { details } = err;
     let messages: string[] = [];
 
     if (Array.isArray(details)) {
       messages = details.map((d: any) => d.message);
     } else {
-      for (const key of Object.keys(details)) {
-        const group = details[key];
+      Object.values(details).forEach((group: any) => {
         if (Array.isArray(group)) {
           messages.push(...group.map((d: any) => d.message));
         }
-      }
+      });
     }
 
     return res.status(400).json({ message: messages.join(', ') || 'Ошибка валидации данных' });
