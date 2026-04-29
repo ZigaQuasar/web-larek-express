@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -6,6 +8,8 @@ import productRoutes from './routes/product';
 import orderRoutes from './routes/order';
 import { notFoundHandler, errorHandler } from './middlewares/error-handler';
 import { errorLogger, requestLogger } from './middlewares/logger';
+
+dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;

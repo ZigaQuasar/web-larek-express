@@ -10,11 +10,11 @@ export const validateProductBody = celebrate({
         'any.required': 'Поле "title" обязательно',
       }),
     image: Joi.object({
-      fileName: Joi.string().required(),
-      originalName: Joi.string().required(),
+      fileName: Joi.string().required().min(1),
+      originalName: Joi.string().required().min(1),
     }).required(),
-    category: Joi.string().required(),
-    description: Joi.string(),
+    category: Joi.string().required().min(1),
+    description: Joi.string().min(1),
     price: Joi.number().min(0).allow(null),
   }),
 });

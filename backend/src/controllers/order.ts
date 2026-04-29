@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import Product from '../models/product';
 import BadRequestError from '../errors/bad-request-error';
 
-const createOrder = async (
+const createOrder = (
   req: Request,
   res: Response,
   next: NextFunction,
