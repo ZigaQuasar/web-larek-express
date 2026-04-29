@@ -30,9 +30,22 @@ export const errorHandler = (
   if (err instanceof ConflictError) return res.status(409).json({ message });
   if (err instanceof NotFoundError) return res.status(404).json({ message });
 
-  if (err.name === 'ValidationError' && err.details) {
-    message = err.details.map((d: any) => d.message).join(', ');
-    return res.status(400).json({ message });
+  if (err.details && typeof err.details === 'object') {
+    const details = err.details;
+    let messages: string[] = [];
+
+    if (Array.isArray(details)) {
+      messages = details.map((d: any) => d.message);
+    } else {
+      for (const key of Object.keys(details)) {
+        const group = details[key];
+        if (Array.isArray(group)) {
+          messages.push(...group.map((d: any) => d.message));
+        }
+      }
+    }
+
+    return res.status(400).json({ message: messages.join(', ') || 'Ошибка валидации данных' });
   }
 
   return res.status(statusCode).json({ message });

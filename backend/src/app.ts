@@ -17,7 +17,7 @@ app.use(express.json());
 
 mongoose.connect(MONGODB_URI);
 
-app.use('/images', express.static(path.join(__dirname, '../public/images')));
+app.use('/images', express.static(path.join(__dirname, '../../public/images')));
 
 app.use(requestLogger);
 
